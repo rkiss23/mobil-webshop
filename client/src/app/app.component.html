@@ -1,0 +1,13 @@
+<h1>Mobil webshop</h1>
+
+<section class="listing">
+  <div *ngFor="let product of products" class="card">
+    <img [src]="'../assets/images/' + product.image" width="200px" />
+    <h2 class="listing-heading">{{ product.title }}</h2>
+    <p class="listing-location">{{ product.description}}</p>
+
+    <div class="cart-button-container">
+      <button class="cart-button">Kosárba</button>
+    </div>
+</div>
+</section>
