@@ -1,13 +1,33 @@
-<h1>Mobil webshop</h1>
-
-<section class="listing">
-  <div *ngFor="let product of products" class="card">
-    <img [src]="'../assets/images/' + product.image" width="200px" />
-    <h2 class="listing-heading">{{ product.title }}</h2>
-    <p class="listing-location">{{ product.description}}</p>
-
-    <div class="cart-button-container">
-      <button class="cart-button">Kosárba</button>
+<div class="sidenav">
+  <section>
+    <div class="title-wrapper">
+      <h3 class="cart-title">Kosár</h3>
     </div>
+    <div *ngFor="let cartProduct of cartProducts" class="card">
+      <div class="image-wrapper">
+        <img [src]="'../assets/images/' + cartProduct.image" width="100px" class="product-image" />
+      </div>
+      <h2 class="cart-listing-heading">{{ cartProduct.title }}</h2>
+      <div class="cart-button-container">
+      <button class="cart-button" (click)="removeFromCart(cartProduct)">Törlés a kosárból</button>
+    </div>
+    </div>
+  </section>
 </div>
-</section>
+
+
+
+<div class="main">
+  <h1>Mobil webshop</h1>
+  <section class="listing">
+    <div *ngFor="let product of products" class="card">
+      <img [src]="'../assets/images/' + product.image" width="200px" />
+      <h2 class="listing-heading">{{ product.title }}</h2>
+      <p class="listing-location">{{ product.description}}</p>
+  
+      <div class="cart-button-container">
+        <button class="cart-button" (click)="addToCart(product)">Kosárba</button>
+      </div>
+  </div>
+  </section>
+</div>  

@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http'; // Corrected import
 import { CommonModule } from '@angular/common'; // Import CommonModule for ngFor
+import { RouterModule } from '@angular/router';
+import { routes } from './app.routes';
 
 @NgModule({
   declarations: [
@@ -11,8 +13,9 @@ import { CommonModule } from '@angular/common'; // Import CommonModule for ngFor
   ],
   imports: [
     BrowserModule,
-    HttpClientModule, // Corrected import
-    CommonModule // Added CommonModule
+    HttpClientModule,
+    CommonModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
