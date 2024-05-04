@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common'; // Import CommonModule for ngFor
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
 
+
 @NgModule({
   declarations: [
     AppComponent

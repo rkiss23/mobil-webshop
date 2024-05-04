@@ -32,8 +32,10 @@ export class AppComponent {
   }
 
   totalPrice = 0;
+  cartCount = 0;
   addToCart(product: any) {
     const cartProduct = this.cartProducts.find((p: { id: any; }) => p.id === product.id);
+    this.cartCount++;
 
     if (cartProduct) {
         cartProduct.quantity += 1;
@@ -49,6 +51,7 @@ export class AppComponent {
 
 removeFromCart(product: any) {
   const cartProduct = this.cartProducts.find((p: { id: any; }) => p.id === product.id);
+  this.cartCount--;
 
   if (cartProduct) {
       if (cartProduct.quantity > 1) {

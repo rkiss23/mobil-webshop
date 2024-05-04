@@ -1,3 +1,13 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+
+:root {
+  --primary-color: #605DC8;
+  --secondary-color: #8B89E6;
+  --accent-color: #e8e7fa;
+  --shadow-color: #E8E8E8;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,13 +15,9 @@
   
   body {
     font-family: 'Be Vietnam Pro', sans-serif;
+    background-color: var(--shadow-color) !important;
   }
-  :root {
-    --primary-color: #605DC8;
-    --secondary-color: #8B89E6;
-    --accent-color: #e8e7fa;
-    --shadow-color: #E8E8E8;
-  }
+
   
   button.primary {
     padding: 10px;

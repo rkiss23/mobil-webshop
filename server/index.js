@@ -1,16 +1,22 @@
 const Express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const migrateProducts = require('./migrations/product');
-const Product = require('./models/product')
+const createAndSaveUsers = require('./migrations/user');
+const createAndSaveProducts = require('./migrations/product');
+const createAndSaveOrders = require('./migrations/order');
+const createAndSaveReviews = require('./migrations/review');
+
+const productController = require('./controllers/productController');
+const orderController = require('./controllers/orderController');
+const userController = require('./controllers/userController');
+const reviewController = require('./controllers/reviewController');
+const authController = require('./controllers/authController');
 
 
 const app = Express();
 app.use(cors());
 
 const CONNECTION_STRING = "mongodb+srv://kissrobert2399:vtTtsJWA1HXUdOn5@cluster0.rsfm8av.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const DATABASENAME = "webshop";
-let database;
 
 
 async function startApp() {
@@ -18,62 +24,35 @@ async function startApp() {
         const client = await mongoose.connect(CONNECTION_STRING);
         console.log('Connected to database');
 
-        await migrateProducts();
+        await createAndSaveUsers();
+        await createAndSaveProducts();
+        await createAndSaveOrders();
+        await createAndSaveReviews();
 
 
-        app.get('/api/webshop/GetProducts', async (req, res) => {
-            try {
-              const products = await Product.find();
-              res.send(products);
-            } catch (error) {
-              console.error('Error fetching products:', error);
-              res.status(500).send('Error fetching products');
-            }
-          });
-
-          app.post('/api/webshop/AddProduct', async (req, res) => {
-            try {
-              const productCount = await Product.countDocuments();
-              const newProduct = new Product({
-                id: (productCount + 1).toString(),
-                description: req.body.productName
-              });
-            } catch (error) {
-                console.error('Error inserting product:', error);
-                res.status(500).send('Error inserting product');
-            }
-        });
+        app.get('/api/webshop/GetProducts', productController.getProducts);
+        app.post('/api/webshop/AddProduct', productController.addProduct);
+        app.put('/api/webshop/UpdateProduct', productController.updateProduct);
+        app.delete('/api/webshop/DeleteProduct', productController.deleteProduct);
 
 
-        app.delete('/api/webshop/DeleteProduct', (request, response) => {
-            database.collection('webshopcollection').deleteOne({
-                id: request.query.id
-            }, (err) => {
-                if (err) {
-                    return response.status(500).send('Error deleting product');
-                }
-                response.json('Deleted successfully');
-            });
-        });
+        app.get('/api/orders', orderController.getOrders);
+        app.post('/api/orders/add', orderController.addOrder);
+        app.put('/api/orders/update', orderController.updateOrder);
+        app.delete('/api/orders/delete', orderController.deleteOrder);
 
+        app.get('/api/users', userController.getUsers);
+        app.post('/api/users/add', userController.addUser);
+        app.put('/api/users/update', userController.updateUser);
+        app.delete('/api/users/delete', userController.deleteUser);
 
+        app.get('/api/reviews', reviewController.getReviews);
+        app.post('/api/reviews/add', reviewController.addReview);
+        app.put('/api/reviews/update', reviewController.updateReview);
+        app.delete('/api/reviews/delete', reviewController.deleteReview);
 
-        app.delete('/api/webshop/DeleteProduct', async (req, res) => {
-            try {
-              const result = await Product.deleteOne({ id: req.query.id });
-      
-              if (result.deletedCount === 0) {
-                return res.status(404).send('Product not found');
-              }
-      
-              res.json('Deleted successfully');
-            } catch (error) {
-              console.error('Error deleting product:', error);
-              res.status(500).send('Error deleting product');
-            }
-          });
-
-
+        app.post('/api/register', authController.register);
+        app.post('/api/login', authController.login);
 
 
         app.listen(3000, () => {
