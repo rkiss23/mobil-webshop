@@ -1,0 +1,50 @@
+<nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white ">Mobil webshop</a>
+      <button class="btn btn-outline-light position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
+        <i class="bi bi-cart text-white"></i>
+        <span *ngIf="cartCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{ cartCount }}
+        </span>
+      </button>
+    </div>
+  </nav>
+  
+  <div class="container mt-3">
+    <div class="row g-4 mt-4">
+      <div *ngFor="let product of products" class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card p-2 h-100 border-0 shadow-sm">
+          <img [src]="'../assets/images/' + product.image" class="card-img-top img-fluid rounded shadow-sm p-4" />
+  
+          <div class="card-body p-2">
+            <h2 class="card-title fs-6 fw-bold text-dark">{{ product.title }}</h2>
+            <p class="card-text small text-muted">{{ product.description }}</p>
+            
+            <button class="btn btn-outline-primary btn-sm w-100" (click)="addToCart(product)">Kosárba</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="offcanvas offcanvas-start bg-white" id="demo">
+    <div class="offcanvas-header">
+      <h1 class="offcanvas-title text-dark">Kosár</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div *ngFor="let cartProduct of cartProducts" class="d-flex align-items-center mb-3">
+        <div class="flex-shrink-0 me-3">
+          <img [src]="'../assets/images/' + cartProduct.image" width="100px" class="img-fluid rounded" />
+        </div>
+        <div class="flex-grow-1">
+          <h2 class="fs-5 text-dark">{{ cartProduct.title }}</h2>
+          <div>{{ cartProduct.quantity }} x <b>{{ cartProduct.price }}</b> HUF</div>
+        </div>
+        <button class="btn btn-outline-danger btn-sm ms-3" (click)="removeFromCart(cartProduct)">Törlés</button>
+      </div>
+      <div class="mt-3">
+        <div class="h4">Végösszeg: <b>{{ totalPrice }}</b> HUF</div>
+      </div>
+    </div>
+  </div>

@@ -30,10 +30,10 @@ async function startApp() {
         await createAndSaveReviews();
 
 
-        app.get('/api/webshop/GetProducts', productController.getProducts);
-        app.post('/api/webshop/AddProduct', productController.addProduct);
-        app.put('/api/webshop/UpdateProduct', productController.updateProduct);
-        app.delete('/api/webshop/DeleteProduct', productController.deleteProduct);
+        app.get('/api/products/get', productController.getProducts);
+        app.post('/api/products/add', productController.addProduct);
+        app.put('/api/products/update', productController.updateProduct);
+        app.delete('/api/products/delete', productController.deleteProduct);
 
 
         app.get('/api/orders', orderController.getOrders);
