@@ -31,13 +31,40 @@ export class AppComponent {
     this.refreshProducts();
   }
 
+  totalPrice = 0;
   addToCart(product: any) {
-    console.log("Termék hozzáadva a kosárhoz:", product);
-    this.cartProducts.push(product)
+    const cartProduct = this.cartProducts.find((p: { id: any; }) => p.id === product.id);
+
+    if (cartProduct) {
+        cartProduct.quantity += 1;
+        this.totalPrice += cartProduct.price;
+        console.log("Már a kosárban volt, mennyiség növelve:", cartProduct);
+    } else {
+        const newProduct = { ...product, quantity: 1 };
+        this.totalPrice += newProduct.price;
+        this.cartProducts.push(newProduct);
+        console.log("Új termék hozzáadva a kosárhoz:", newProduct);
+    }
+}
+
+removeFromCart(product: any) {
+  const cartProduct = this.cartProducts.find((p: { id: any; }) => p.id === product.id);
+
+  if (cartProduct) {
+      if (cartProduct.quantity > 1) {
+          cartProduct.quantity -= 1;
+          this.totalPrice -= cartProduct.price;
+          console.log("Mennyiség csökkentve:", cartProduct);
+      } else {
+          this.cartProducts = this.cartProducts.filter((p: { id: any; }) => p.id !== product.id);
+          this.totalPrice -= cartProduct.price;
+          console.log("Termék eltávolítva a kosárból:", product);
+      }
+  } else {
+      console.log("A termék nincs a kosárban:", product);
   }
 
-  removeFromCart(product: any) {
-    this.cartProducts = this.cartProducts.filter((p: any) => p !== product);
-  }
+  console.log("Összesített ár:", this.totalPrice);
+}
 
 }

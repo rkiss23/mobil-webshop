@@ -8,6 +8,7 @@
     border-radius: 30px;
     padding-bottom: 30px;
     margin: 10px;
+    position: relative;
   }
 
   .listing-heading {
@@ -112,4 +113,24 @@
     font-size: 18px;
     margin-bottom: 10px;
     text-align: center;
+  }
+
+  .cart-quantity {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 100%;
+    background-color: red;
+    color: white;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .cart-total {
+    color: white;
+    position: absolute;
+    bottom: 100px;
+    left: 10px;
   }

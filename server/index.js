@@ -1,7 +1,9 @@
 const Express = require('express');
-const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
-const multer = require('multer');
+const mongoose = require('mongoose');
+const migrateProducts = require('./migrations/product');
+const Product = require('./models/product')
+
 
 const app = Express();
 app.use(cors());
@@ -10,41 +12,38 @@ const CONNECTION_STRING = "mongodb+srv://kissrobert2399:vtTtsJWA1HXUdOn5@cluster
 const DATABASENAME = "webshop";
 let database;
 
-// Create an async function to connect to the database
+
 async function startApp() {
     try {
-        const client = await MongoClient.connect(CONNECTION_STRING);
-        database = client.db(DATABASENAME);
+        const client = await mongoose.connect(CONNECTION_STRING);
         console.log('Connected to database');
 
+        await migrateProducts();
 
-        app.get('/api/webshop/GetProducts', async (request, response) => {
+
+        app.get('/api/webshop/GetProducts', async (req, res) => {
             try {
-                console.log('Fetching products...');
-                const products = await database.collection('webshopcollection').find({}).toArray();
-                response.send(products)
+              const products = await Product.find();
+              res.send(products);
             } catch (error) {
-                console.error('Error fetching products:', error);
-                response.status(500).send('Error fetching products');
+              console.error('Error fetching products:', error);
+              res.status(500).send('Error fetching products');
+            }
+          });
+
+          app.post('/api/webshop/AddProduct', async (req, res) => {
+            try {
+              const productCount = await Product.countDocuments();
+              const newProduct = new Product({
+                id: (productCount + 1).toString(),
+                description: req.body.productName
+              });
+            } catch (error) {
+                console.error('Error inserting product:', error);
+                res.status(500).send('Error inserting product');
             }
         });
 
-        app.post('/api/webshop/AddProduct', multer().none(), (request, response) => {
-            database.collection('webshopcollection').countDocuments({}, (error, numOfDocs) => {
-                if (error) {
-                    return response.status(500).send('Error counting documents');
-                }
-                database.collection('webshopcollection').insertOne({
-                    id: (numOfDocs + 1).toString(),
-                    description: request.body.productName
-                }, (err) => {
-                    if (err) {
-                        return response.status(500).send('Error adding product');
-                    }
-                    response.json('Added successfully');
-                });
-            });
-        });
 
         app.delete('/api/webshop/DeleteProduct', (request, response) => {
             database.collection('webshopcollection').deleteOne({
@@ -57,7 +56,26 @@ async function startApp() {
             });
         });
 
-        // Start the server only after routes are defined
+
+
+        app.delete('/api/webshop/DeleteProduct', async (req, res) => {
+            try {
+              const result = await Product.deleteOne({ id: req.query.id });
+      
+              if (result.deletedCount === 0) {
+                return res.status(404).send('Product not found');
+              }
+      
+              res.json('Deleted successfully');
+            } catch (error) {
+              console.error('Error deleting product:', error);
+              res.status(500).send('Error deleting product');
+            }
+          });
+
+
+
+
         app.listen(3000, () => {
             console.log('Server is running on port 3000');
         });
@@ -66,5 +84,4 @@ async function startApp() {
     }
 }
 
-// Start the app by calling the async function
 startApp();

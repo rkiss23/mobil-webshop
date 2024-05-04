@@ -4,6 +4,7 @@
       <h3 class="cart-title">Kosár</h3>
     </div>
     <div *ngFor="let cartProduct of cartProducts" class="card">
+      <div class="cart-quantity">{{ cartProduct.quantity }}</div>
       <div class="image-wrapper">
         <img [src]="'../assets/images/' + cartProduct.image" width="100px" class="product-image" />
       </div>
@@ -11,6 +12,12 @@
       <div class="cart-button-container">
       <button class="cart-button" (click)="removeFromCart(cartProduct)">Törlés a kosárból</button>
     </div>
+    </div>
+    <div class="cart-total">
+      Végösszeg:
+      <div>
+        <b>{{ totalPrice }}</b> HUF
+      </div>
     </div>
   </section>
 </div>
