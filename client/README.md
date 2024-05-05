@@ -5,10 +5,10 @@
 
 # Run
 
-## Client:
+### Client:
  - In the client directory run `ng serve --o`
 
-## Server:
+### Server:
  - In the server directory run `node index.js`
 
 
