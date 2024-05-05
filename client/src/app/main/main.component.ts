@@ -24,7 +24,7 @@ export class MainComponent {
   products: any = [];
   cartProducts: any = [];
   loggedIn: boolean = false;
-
+  isAdmidmin: boolean = false;
 
   refreshProducts() {
     this.http.get(this.ApiUrl + 'get').subscribe(data => {
@@ -37,6 +37,7 @@ export class MainComponent {
     if (typeof window !== 'undefined' && window.localStorage) {
       
       this.loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      this.isAdmidmin = localStorage.getItem('isAdmin') === 'true';
 
     }
 
@@ -46,11 +47,12 @@ export class MainComponent {
 
 
   isLoggedIn(): boolean {
-    console.log('igaz?', this.loggedIn);
     return this.loggedIn;
-    
   }
-
+  
+  isAdmin(): boolean {
+    return this.isAdmidmin;
+  }
 
   logout() {
     this.authService.logout();
@@ -81,6 +83,62 @@ export class MainComponent {
         this.cartProducts.push(newProduct);
         console.log("Új termék hozzáadva a kosárhoz:", newProduct);
     }
+}
+
+deleteProduct(product: any) {
+  const productId = product.id;
+  this.http.delete(this.ApiUrl + 'delete', { params: { id: productId } }).subscribe(
+    (response) => {
+      console.log('Termék sikeresen törölve:', response);
+      this.refreshProducts();
+    },
+    (error) => {
+      console.error('Hiba történt a termék törlése során:', error);
+    }
+  );
+}
+
+
+editProduct(product: any) {
+  const newTitle = prompt('Add meg a termék új nevét:', product.title);
+  const newDescription = prompt('Add meg a termék új leírását:', product.description);
+
+  const newPriceStr = prompt('Add meg a termék új árát:', product.price.toString());
+  const newPrice = newPriceStr !== null ? parseFloat(newPriceStr) : NaN;
+
+
+  if (newTitle && newDescription && !isNaN(newPrice)) {
+    const updatedProduct = { ...product, title: newTitle, description: newDescription, price: newPrice };
+    this.http.put(this.ApiUrl + 'update', updatedProduct).subscribe(
+      (response) => {
+        console.log('Termék sikeresen frissítve:', response);
+        this.refreshProducts();
+      },
+      (error) => {
+        console.error('Hiba történt a termék frissítése során:', error);
+      }
+    );
+  }
+}
+
+addNewProduct() {
+  const title = prompt('Add meg az új termék nevét:');
+  const description = prompt('Add meg az új termék leírását:');
+  const priceStr = prompt('Add meg az új termék árát:');
+  const price = priceStr !== null ? parseFloat(priceStr) : NaN;
+
+  if (title && description && !isNaN(price)) {
+    const newProduct = { title, description, price, image: 'iphone_15.jpg' };
+    this.http.post(this.ApiUrl + 'create', newProduct).subscribe(
+      (response) => {
+        console.log('Új termék sikeresen hozzáadva:', response);
+        this.refreshProducts();
+      },
+      (error) => {
+        console.error('Hiba történt az új termék hozzáadása során:', error);
+      }
+    );
+  }
 }
 
 removeFromCart(product: any) {

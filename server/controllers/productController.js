@@ -13,16 +13,22 @@ const getProducts = async (req, res) => {
 
   const addProduct = async (req, res) => {
     try {
-      const productCount = await Product.countDocuments();
-      const newProduct = new Product({
-        id: (productCount + 1).toString(),
-        description: req.body.productName
-      });
+        const productCount = await Product.countDocuments();
+        const newProduct = new Product({
+            id: (productCount + 1).toString(), 
+            title: req.body.title, 
+            description: req.body.description,
+            price: req.body.price,
+            image: req.body.image || 'iphone_15.jpg' 
+        });
+
+        await newProduct.save(); 
+        res.json({ message: 'Product added successfully', product: newProduct });
     } catch (error) {
         console.error('Error inserting product:', error);
         res.status(500).send('Error inserting product');
     }
-}
+};
 
 const updateProduct =  async (req, res) => {
     try {

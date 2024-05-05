@@ -2,13 +2,15 @@
   <div class="container-fluid">
     <a class="navbar-brand text-white">Mobil webshop</a>
     <div>
-      <a *ngIf="isLoggedIn()==false" class="btn btn-outline-light position-relative me-2" type="button" href="/login">
+      <a *ngIf="!isLoggedIn()" class="btn btn-outline-light position-relative me-2" type="button" href="/login">
         Bejelentkezés
       </a>
       <button *ngIf="isLoggedIn()" class="btn btn-outline-light me-2" type="button" (click)="logout()">
         Kijelentkezés
       </button>
-     
+      <button *ngIf="isAdmin()" class="btn btn-outline-light me-2" type="button" (click)="addNewProduct()">
+        Új termék
+      </button>
       <button *ngIf="isLoggedIn()" class="btn btn-outline-light position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
         <i class="bi bi-cart text-white"></i>
         <span *ngIf="cartCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -19,6 +21,7 @@
   </div>
 </nav>
 
+
 <div class="container mt-3">
   <div class="row g-4 mt-4">
     <div *ngFor="let product of products" class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -27,15 +30,16 @@
         <div class="card-body p-2">
           <h2 class="card-title fs-6 fw-bold text-dark">{{ product.title }}</h2>
           <p class="card-text small text-muted">{{ product.description }}</p>
-          
+          <p class="card-text small text-muted">{{ product.price }} HUF</p>
           <button *ngIf="isLoggedIn()" class="btn btn-outline-primary btn-sm w-100" (click)="addToCart(product)">Kosárba</button>
+          <button *ngIf="isAdmin()" class="btn btn-outline-danger btn-sm w-100 mt-2" (click)="deleteProduct(product)">Termék törlése</button>
+          <button *ngIf="isAdmin()" class="btn btn-outline-warning btn-sm w-100 mt-2" (click)="editProduct(product)">Termék szerkesztése</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Csak bejelentkezett felhasználóknak mutatja a kosarat -->
 <div *ngIf="isLoggedIn()" class="offcanvas offcanvas-start bg-white" id="demo">
   <div class="offcanvas-header">
     <h1 class="offcanvas-title text-dark">Kosár</h1>

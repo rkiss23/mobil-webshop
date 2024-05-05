@@ -33,7 +33,7 @@ async function startApp() {
 
 
         app.get('/api/products/get', productController.getProducts);
-        app.post('/api/products/add', productController.addProduct);
+        app.post('/api/products/create', productController.addProduct);
         app.put('/api/products/update', productController.updateProduct);
         app.delete('/api/products/delete', productController.deleteProduct);
 
