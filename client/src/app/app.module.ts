@@ -6,12 +6,14 @@ import { CommonModule } from '@angular/common';
 import { CartComponent } from './cart/cart.component';
 import { FormsModule } from '@angular/forms'; // Importáltad a FormsModule-t
 import { RegistrationComponent } from './registration/registration.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CartComponent,
-    RegistrationComponent 
+    RegistrationComponent,
+    AdminComponent 
   ],
   imports: [
     BrowserModule,

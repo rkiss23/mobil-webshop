@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -13,12 +15,16 @@ import { RouterOutlet } from '@angular/router';
 export class MainComponent {
   title = 'client';
   readonly ApiUrl="http://localhost:3000/api/products/"
+ 
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient, private authService: AuthService, private router: Router) {
+    
   }
   
   products: any = [];
   cartProducts: any = [];
+  loggedIn: boolean = false;
+
 
   refreshProducts() {
     this.http.get(this.ApiUrl + 'get').subscribe(data => {
@@ -28,7 +34,36 @@ export class MainComponent {
 
   ngOnInit() {
     this.refreshProducts();
+    if (typeof window !== 'undefined' && window.localStorage) {
+      
+      this.loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    }
+
+    
+    
   }
+
+
+  isLoggedIn(): boolean {
+    console.log('igaz?', this.loggedIn);
+    return this.loggedIn;
+    
+  }
+
+
+  logout() {
+    this.authService.logout();
+    this.loggedIn = false;
+    this.cartProducts = [];
+    this.cartCount = 0;
+    this.totalPrice = 0;
+    this.router.navigate(['/']).then(() => {
+      window.location.reload();
+    });
+  }
+
+ 
 
   totalPrice = 0;
   cartCount = 0;

@@ -13,17 +13,17 @@
                 </div>
               </div>
             </div>
-            <form action="#!">
+            <form (ngSubmit)="onLogin()">
               <div class="row gy-3 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
-                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" name="username" id="username" required [(ngModel)]="loginData.username">
+                    <label for="username" class="form-label">Felhasználónév</label>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required [(ngModel)]="loginData.password">
                     <label for="password" class="form-label">Jelszó</label>
                   </div>
                 </div>
@@ -34,12 +34,14 @@
                 </div>
               </div>
             </form>
+            <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+            <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
             <div class="row">
               <div class="col-12">
                 <hr class="mt-5 mb-4 border-secondary-subtle">
                 <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                  <a href="http://localhost:4200/" class="link-secondary text-decoration-none">Főoldal</a>
-                  <a href="http://localhost:4200/registration" class="link-secondary text-decoration-none">Regisztráció</a>
+                  <a href="/" class="link-secondary text-decoration-none">Főoldal</a>
+                  <a href="/registration" class="link-secondary text-decoration-none">Regisztráció</a>
                 </div>
               </div>
             </div>

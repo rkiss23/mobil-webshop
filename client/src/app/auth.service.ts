@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { log } from 'console';
 @Injectable({
     providedIn: 'root'
   })
@@ -15,25 +16,34 @@ import { map } from 'rxjs/operators';
       this.isAuthenticatedSubject.next(!!this.getToken());
     }
   
-    login(email: string, password: string): Observable<any> {
-      return this.http.post<any>(`${this.apiUrl}/login`, { email, password })
-        .pipe(map(response => {
-          if (response && response.token) {
-            if (typeof window !== 'undefined' && window.localStorage) {
-              localStorage.setItem('currentUser', JSON.stringify(response));
+    login(username: string, password: string): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/login`, { username, password })
+          .pipe(map(response => {
+            if (response && response.token) {
+              if (typeof window !== 'undefined' && window.localStorage) {
+                localStorage.setItem('currentUser', JSON.stringify(response));
+                localStorage.setItem('isAdmin', response.isAdmin); 
+                localStorage.setItem('isLoggedIn', 'true');
+              }
+              this.isAuthenticatedSubject.next(true);
             }
-            this.isAuthenticatedSubject.next(true);
-          }
-          return response;
-        }));
-    }
-  
-    logout() {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        localStorage.removeItem('currentUser');
+            return response;
+          }));
       }
-      this.isAuthenticatedSubject.next(false);
-    }
+      
+      logout() {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('isAdmin'); 
+          localStorage.removeItem('isLoggedIn');
+        }
+        this.isAuthenticatedSubject.next(false);
+      }
+
+      isAdmin(): boolean {
+        return localStorage.getItem('isAdmin') === 'true';
+      
+      }
   
     getToken(): string | null {
       if (typeof window !== 'undefined' && window.localStorage) {
