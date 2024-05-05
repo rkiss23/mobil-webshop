@@ -1,6 +1,10 @@
 <nav class="navbar navbar-light bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand text-white ">Mobil webshop</a>
+  <div class="container-fluid">
+    <a class="navbar-brand text-white ">Mobil webshop</a>
+    <div>
+      <a class="btn btn-outline-light position-relative me-2" type="button" href="http://localhost:4200/login">
+        Bejelentkezés
+      </a>
       <button class="btn btn-outline-light position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo">
         <i class="bi bi-cart text-white"></i>
         <span *ngIf="cartCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -8,7 +12,8 @@
         </span>
       </button>
     </div>
-  </nav>
+  </div>
+</nav>
   
   <div class="container mt-3">
     <div class="row g-4 mt-4">
