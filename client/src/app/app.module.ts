@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { CartComponent } from './cart/cart.component';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // Importáltad a FormsModule-t
 import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ import { RegistrationComponent } from './registration/registration.component';
     BrowserModule,
     HttpClientModule,
     CommonModule,
-    FormsModule
+    FormsModule // Hozzáadtad a FormsModule-t az imports tömbhöz
   ],
   providers: [],
   bootstrap: [AppComponent]

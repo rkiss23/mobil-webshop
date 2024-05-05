@@ -1,26 +1,32 @@
+
+
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
+
+const SALT_ROUNDS = 10;
 
 const register = async (req, res) => {
   try {
-    const { username, password, email, firstName, lastName } = req.body;
-    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+      const { username, password, email, firstName, lastName } = req.body;
+      console.log('teszt1') 
 
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
+      const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-    const newUser = new User({
-      username,
-      password,
-      email,
-      firstName,
-      lastName
-    });
-    await newUser.save();
-    res.json('User registered successfully');
+      const newUser = new User({
+          username,
+          password: hashedPassword,
+          email,
+          firstName,
+          lastName,
+          isAdmin: false 
+      });
+
+      await newUser.save();
+      console.log('teszt2')
+      res.status(201).json('User registered successfully');
   } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).send('Error registering user');
+      console.error('Error registering user:', error);
+      res.status(500).json('Error registering user');
   }
 };
 
@@ -39,5 +45,6 @@ const login = async (req, res) => {
     res.status(500).send('Error logging in');
   }
 };
+
 
 module.exports = { register, login };

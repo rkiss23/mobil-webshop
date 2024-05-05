@@ -1,4 +1,8 @@
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
+
+
+const SALT_ROUNDS = 10;
 
 const getUsers = async (req, res) => {
   try {
@@ -12,15 +16,20 @@ const getUsers = async (req, res) => {
 
 const addUser = async (req, res) => {
   try {
-    const { username, password, email, firstName, lastName, isAdmin } = req.body;
+    const { username, password, email, firstName, lastName} = req.body;
+
+    
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+
     const newUser = new User({
       username,
-      password,
+      password: hashedPassword,
       email,
       firstName,
       lastName,
-      isAdmin
+      isAdmin: false
     });
+
     await newUser.save();
     res.json('User added successfully');
   } catch (error) {
@@ -39,8 +48,12 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    
+    if (password) {
+      user.password = await bcrypt.hash(password, SALT_ROUNDS);
+    }
+
     user.username = username;
-    user.password = password;
     user.email = email;
     user.firstName = firstName;
     user.lastName = lastName;
@@ -75,4 +88,4 @@ module.exports = {
     addUser,
     updateUser,
     deleteUser
- };
+};

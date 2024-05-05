@@ -7,7 +7,6 @@
             <div class="row">
               <div class="col-12">
                 <div class="mb-5">
-                  <div class="text-center mb-4"></div>
                   <h4 class="text-center">Regisztráció</h4>
                 </div>
               </div>
@@ -16,25 +15,45 @@
               <div class="row gy-3 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required />
+                    <input type="text" class="form-control" name="username" id="username"
+                           [(ngModel)]="registrationData.username" placeholder="Felhasználónév" required />
+                    <label for="username" class="form-label">Felhasználónév</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="email" class="form-control" name="email" id="email"
+                           [(ngModel)]="registrationData.email" placeholder="name@example.com" required />
                     <label for="email" class="form-label">Email</label>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control" name="password" id="password" value="" placeholder="Jelszó" required />
-                    <label for="password" class="form-label">Jelszó</label>
+                    <input type="text" class="form-control" name="firstName" id="firstName"
+                           [(ngModel)]="registrationData.firstName" placeholder="Keresztnév" required />
+                    <label for="firstName" class="form-label">Keresztnév</label>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control" name="password_again" id="password_again" value="" placeholder="Jelszó ismét" required />
-                    <label for="password" class="form-label">Jelszó ismét</label>
+                    <input type="text" class="form-control" name="lastName" id="lastName"
+                           [(ngModel)]="registrationData.lastName" placeholder="Vezetéknév" required />
+                    <label for="lastName" class="form-label">Vezetéknév</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="password" class="form-control" name="password" id="password"
+                           [(ngModel)]="registrationData.password" placeholder="Jelszó" required />
+                    <label for="password" class="form-label">Jelszó</label>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="d-grid">
                     <button class="btn bsb-btn-xl btn-primary" type="button" (click)="onSubmit()">Regisztráció</button>
+                  </div>
+                  <div *ngIf="successMessage" class="success-message">
+                    {{ successMessage }}
                   </div>
                 </div>
               </div>

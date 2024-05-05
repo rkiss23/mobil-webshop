@@ -15,6 +15,8 @@ const authController = require('./controllers/authController');
 
 const app = Express();
 app.use(cors());
+app.use(Express.json()); 
+app.use(Express.urlencoded({ extended: true })); 
 
 const CONNECTION_STRING = "mongodb+srv://kissrobert2399:vtTtsJWA1HXUdOn5@cluster0.rsfm8av.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -53,6 +55,7 @@ async function startApp() {
 
         app.post('/api/register', authController.register);
         app.post('/api/login', authController.login);
+      
 
 
         app.listen(3000, () => {

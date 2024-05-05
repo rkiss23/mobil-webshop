@@ -1,33 +1,39 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule], // Add CommonModule here
   templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css'
+  styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent {
-  readonly ApiUrl="http://localhost:3000/api/"
+  readonly ApiUrl = "http://localhost:3000/api/";
 
   registrationData = {
+    username: '',
     email: '',
-    password: '',
-    password_again: ''
+    firstName: '',
+    lastName: '',
+    password: ''
   };
-  
+
+  successMessage: string | null = null;
+
   constructor(private http: HttpClient) { }
 
   onSubmit() {
-
-    this.http.post(this.ApiUrl + 'registration', this.registrationData)
+    this.http.post(this.ApiUrl + 'register', this.registrationData)
       .subscribe(
         (response) => {
-          console.log('Sikeres regisztráció!', response);
+          this.successMessage = 'Sikeres regisztráció!';
         },
         (error) => {
           console.error('Hiba történt a regisztráció során:', error);
+          this.successMessage = null; // Remove the message on error
         }
       );
   }
