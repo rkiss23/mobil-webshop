@@ -19,7 +19,7 @@ import { AdminComponent } from './admin/admin.component';
     BrowserModule,
     HttpClientModule,
     CommonModule,
-    FormsModule // Hozzáadtad a FormsModule-t az imports tömbhöz
+    FormsModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

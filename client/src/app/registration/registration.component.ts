@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Add CommonModule here
+  imports: [CommonModule, FormsModule], 
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
@@ -33,7 +33,7 @@ export class RegistrationComponent {
         },
         (error) => {
           console.error('Hiba történt a regisztráció során:', error);
-          this.successMessage = null; // Remove the message on error
+          this.successMessage = null; 
         }
       );
   }
